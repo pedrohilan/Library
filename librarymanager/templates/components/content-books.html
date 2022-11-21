@@ -1,0 +1,64 @@
+{% load static %}
+<div class="row">
+    <div class="col">
+        <div class="container rounded my-4">
+            <div class="spam text-white text-center display-4 fw-bold">
+                Aqui estão alguns livros
+            </div>
+        </div>
+    </div>
+</div>
+{% if messages %}
+<ul class="messages container">
+    {% for message in messages %}
+    <li {% if message.tags %} class="alert alert-{{message.tags}}" {% endif %}> {{message}}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<div class="col-md-10 offset-1 add-div">
+    <a href="{% url 'new_book' %}">
+        <button class="btn btn-outline-success" type="submit">
+            <ion-icon name="add-outline"></ion-icon>
+            Adicionar livro
+        </button>
+    </a>
+</div>
+
+<div class="row my-3">
+    <div class="col-md-10 offset-1">
+        <div class="row row-cols-1 row-cols-md-4 g-3">
+
+            {% for book in books %}
+            <div class="col">
+                <div class="card bg-light">
+                    <div class="text-center">
+                        <a href="{% url 'book_details' book.id %}">
+                            <img src="{{book.img.url}}" class="book-img" alt="...">
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{book.name}}</h5>
+                        <p class="card-text">Autor: {{book.author}} </br> ano: {{book.year}} </br> {{book.numberPages}}
+                            páginas </p>
+                        <div>
+                            <a href="{% url 'edit_book' book.id %}">
+                                <button class="btn btn-outline-warning edit-book" type="submit">
+                                    <ion-icon name="create-outline"></ion-icon>
+                                    Editar
+                                </button>
+                            </a>
+                            <a href="{% url 'delete_book' book.id %}">
+                                <button class="btn btn-outline-danger remove-book" type="submit">
+                                    <ion-icon name="trash-bin-outline"></ion-icon>
+                                    Excluir
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
