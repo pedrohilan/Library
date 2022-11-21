@@ -1,5 +1,5 @@
 git clone https://github.com/pedrohilan/Library.git
-cd library
+cd Library
 mkdir static
 virtualenv -p python3 venv
 source /venv/bin/activate
