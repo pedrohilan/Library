@@ -7,21 +7,25 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto fs-5 mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link text-light" href="{% url 'books' %}">Livros <ion-icon name="library-outline"></ion-icon> </a>
-                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="{% url 'books' %}">Livros
+                            <ion-icon name="library-outline"></ion-icon>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="/accounts/logout">Sair
+                            <ion-icon name="log-out-outline"></ion-icon>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="/accounts/logout">Entrar
+                            <ion-icon name="log-in-outline"></ion-icon>
+                        </a>
+                    </li>
+                {% endif %}
             </ul>
-            <ul class="navbar-nav">
-                <li class="nav-item mx-lg-2">
-                    <a class="btn btn-light btn-large" aria-current="page" href="#">
-                        <span class="text">Entrar</span>
-                    </a>
-                </li>
-            </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Sua pesquisa" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Buscar</button>
-            </form>
         </div>
     </div>
 </nav>
