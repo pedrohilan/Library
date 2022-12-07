@@ -18,9 +18,9 @@ def books(request):
     search = request.GET.get('busca')
 
     if search:
-        books = Book.objects.filter(name__icontains=search)
+        books = Book.objects.filter(name__icontains=search, user=request.user)
     else:
-        books_list = Book.objects.all().order_by('-created_at')
+        books_list = Book.objects.all().order_by('-created_at').filter(user=request.user)
         paginator = Paginator(books_list, 4)
         page = request.GET.get('page')
         books = paginator.get_page(page)
@@ -32,7 +32,7 @@ def books(request):
 def book_details(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
     context = {'book': book}
-    return render(request, "book_details.html", context)
+    return render(request, "book-details.html", context)
 
 @login_required()
 def new_book(request):
@@ -42,6 +42,7 @@ def new_book(request):
         if form.is_valid():
             book = form.save(commit=False)
             book.lastPageRead = 0
+            book.user = request.user
             book.save()
             messages.success(request, 'Livro adicionado com sucesso.')
             return redirect('/livros')
