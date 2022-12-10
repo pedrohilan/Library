@@ -11,5 +11,6 @@ urlpatterns = [
     path('livro/<int:book_id>', views.book_details, name='book_details'),
     path('novolivro/', views.new_book, name='new_book'),
     path('editar/<int:book_id>', views.edit_book, name='edit_book'),
+    path('ultimapaginalida/<int:book_id>', views.update_last_page_read, name='update_last_page_read'),
     path('apagar/<int:book_id>', views.delete_book, name='delete_book')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

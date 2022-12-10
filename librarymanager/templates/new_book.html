@@ -8,8 +8,9 @@
 {% endblock %}
 
 {% block content%}
-<div class="offset-1 col-19 list-div">
+<div class="container col-19 list-div">
     <h1>Adicione seu livro</h1>
+    <br>
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{form|crispy}}
