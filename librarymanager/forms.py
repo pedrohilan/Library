@@ -6,3 +6,8 @@ class BookForm(forms.ModelForm):
     class Meta:
         model = Book
         fields = ('name', 'author', 'year', 'numberPages', 'img')
+
+class LastPageRead(forms.ModelForm):
+    class Meta:
+        model = Book
+        fields = ('lastPageRead', )

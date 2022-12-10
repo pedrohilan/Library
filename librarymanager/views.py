@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from librarymanager.models import Book
-from librarymanager.forms import BookForm
+from librarymanager.forms import BookForm, LastPageRead
 from django.contrib import messages
 from django.core.paginator import Paginator
 
@@ -20,7 +20,7 @@ def books(request):
     if search:
         books = Book.objects.filter(name__icontains=search, user=request.user)
     else:
-        books_list = Book.objects.all().order_by('-created_at').filter(user=request.user)
+        books_list = Book.objects.all().order_by('-lastPageRead').filter(user=request.user)
         paginator = Paginator(books_list, 4)
         page = request.GET.get('page')
         books = paginator.get_page(page)
@@ -32,7 +32,7 @@ def books(request):
 def book_details(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
     context = {'book': book}
-    return render(request, "book-details.html", context)
+    return render(request, "book_details.html", context)
 
 @login_required()
 def new_book(request):
@@ -71,6 +71,29 @@ def edit_book(request, book_id):
             return render(request, "edit_book.html", {'form': form, 'book': book})
     else:
         return render(request, "edit_book.html", {'form': form, 'book': book})
+
+@login_required()
+def update_last_page_read(request, book_id):
+    book = get_object_or_404(Book, pk=book_id)
+    form = LastPageRead(instance=book)
+
+    if (request.method == 'POST'):
+        form = LastPageRead(request.POST, instance=book)
+
+        if form.is_valid():
+
+            if book.lastPageRead > book.numberPages:
+                messages.warning(request, 'Número de página inválido - maior do que a quantidade de páginas do livro!')
+                return redirect('/livros')
+            else:
+                book.save()
+                messages.success(request, 'Leitura atualizada com sucesso!')
+                return redirect('/livros')
+
+        else:
+            return render(request, "update_last_page_read.html", {'form': form, 'book': book})
+    else:
+        return render(request, "update_last_page_read.html", {'form': form, 'book': book})
 
 @login_required()
 def delete_book(request, book_id):
