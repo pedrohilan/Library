@@ -13,7 +13,7 @@
         <div class="card auth-card">
             <div class="card-body">
                 <h4 class="card-title text-center">Entrar no Library</h4>
-                <form method="POST">
+                <form class="form-add-up" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="next" value="{{next}}">
 

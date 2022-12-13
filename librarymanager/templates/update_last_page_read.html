@@ -10,9 +10,8 @@
 {% block content%}
 <div class="container col-19 list-div">
     <h1>Atualizando leitura de: '{{book.name}}'</h1>
-    <br>
     <img width="400" src="{{book.img.url}}" class="" alt="...">
-    <form method="POST" enctype="multipart/form-data">
+    <form method="POST" class="form-add-up" enctype="multipart/form-data">
         {% csrf_token %}
         {{form|crispy}}
         <input type="submit" class="btn btn-success" value="Atualizar leitura">

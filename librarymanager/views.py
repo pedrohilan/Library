@@ -20,7 +20,7 @@ def books(request):
     if search:
         books = Book.objects.filter(name__icontains=search, user=request.user)
     else:
-        books_list = Book.objects.all().order_by('-lastPageRead').filter(user=request.user)
+        books_list = Book.objects.all().order_by('-progress').filter(user=request.user)
         paginator = Paginator(books_list, 4)
         page = request.GET.get('page')
         books = paginator.get_page(page)
@@ -42,6 +42,7 @@ def new_book(request):
         if form.is_valid():
             book = form.save(commit=False)
             book.lastPageRead = 0
+            book.progress = 0
             book.user = request.user
             book.save()
             messages.success(request, 'Livro adicionado com sucesso.')
@@ -86,6 +87,7 @@ def update_last_page_read(request, book_id):
                 messages.warning(request, 'Número de página inválido - maior do que a quantidade de páginas do livro!')
                 return redirect('/livros')
             else:
+                book.progress = (book.lastPageRead/book.numberPages) * 100
                 book.save()
                 messages.success(request, 'Leitura atualizada com sucesso!')
                 return redirect('/livros')
