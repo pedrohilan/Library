@@ -8,6 +8,7 @@ class Book(models.Model):
     year = models.IntegerField(null=False, blank=False)
     numberPages = models.IntegerField(null=False, blank=False)
     lastPageRead = models.IntegerField(null=False, blank=False)
+    progress = models.IntegerField(null=False, blank=False)
     img = models.ImageField(upload_to='librarymanager/img', default='', null=False, blank=False)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
